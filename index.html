@@ -8,17 +8,33 @@
 </head>
 <body>
     <div class="container">
+        <!-- Existing Section: How is SH Today Data -->
         <h1>How was SH. feeling yesterday?</h1>
         <div id="status">
             <h2>Sleep Quality out of 5: <span id="mood">Loading...</span></h2>
         </div>
         <div id="data">
             <p>Laptop Screen Time: <span id="laptoptime">Loading...</span></p>
-			<p>Phone Screen Time: <span id="phonetime">Loading...</span></p>
-			<p>How many tasks do I have to complete?: <span id="TTR">Loading...</span></p>
-			<p>Did SH. wear his retainers yesterday?: <span id="retainers">Loading...</span></p>
-			<p>How would SH. describe how productive his day was?: <span id="productiveness">Loading...</span></p>
+            <p>Phone Screen Time: <span id="phonetime">Loading...</span></p>
+            <p>How many tasks do I have to complete?: <span id="TTR">Loading...</span></p>
+            <p>Did SH. wear his retainers yesterday?: <span id="retainers">Loading...</span></p>
+            <p>How would SH. describe how productive his day was?: <span id="productiveness">Loading...</span></p>
+        </div>
 
+        <!-- New Section for Last.fm Latest Listened Song -->
+        <div id="music-info" class="music-info">
+            <h2>SH. has been listening to...</h2>
+            <p>Song: <span id="song-name">Loading...</span></p>
+            <p>Artist: <span id="artist-name">Loading...</span></p>
+            <img id="album-art" src="" alt="Album Art" style="width: 100px; height: 100px; display: none;">
+        </div>
+
+        <!-- New Section for Trakt.tv Latest Watched Movie or Episode -->
+        <div id="trakt-info" class="trakt-info">
+            <h2>Latest Watched Movie or Episode</h2>
+            <p>Title: <span id="trakt-title">Loading...</span></p>
+            <p>Type: <span id="trakt-type">Loading...</span></p>
+            <img id="trakt-poster" src="" alt="Poster" style="width: 100px; height: 150px; display: none;">
         </div>
     </div>
 
