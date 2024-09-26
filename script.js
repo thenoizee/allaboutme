@@ -2,7 +2,7 @@
 function fetchData() {
     const sheetId = '1zFkn6MAbf_xnzsl3b605HCqCNRzNkZsuSmXe3GWAqzs';
     const apiKey = 'AIzaSyBaDaPUmaa4Fch3HHQXUZPKVKB7TOU4LfU';
-    const sheetRange = 'Sheet1!A:F';
+    const sheetRange = 'Sheet1!A:G';
 
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetRange}?key=${apiKey}`;
 
@@ -18,6 +18,7 @@ function fetchData() {
                 document.getElementById('TTR').textContent = lastRow[3] || 'No data';
                 document.getElementById('retainers').textContent = lastRow[4] || 'No data';
                 document.getElementById('productiveness').textContent = lastRow[5] || 'No data';
+				document.getElementById('working').textContent = lastRow[6] || 'No data';
             }
         })
         .catch(error => {
