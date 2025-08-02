@@ -9,3 +9,5 @@ inspired by felix krause (https://howisfelix.today/)!
 <br />My website automatically updates every 60 seconds with the latest entry submitted/copied from this sheet
 <br />This spreadsheet is linked to my website written in HTML and hosted on GitHub pages
 
+# how to update the code
+<br />Update the script.js file only.
