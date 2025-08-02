@@ -84,7 +84,7 @@ function fetchLastFmData() {
 // This function uses the original third-party widget URL and cannot display the title from the image.
 function fetchTraktData() {
     const username = 'thesamsterz';
-    const traktPosterUrl = `https://trakt-widgets.vercel.app/${username}/watched/poster`;
+    const traktPosterUrl = `https://trakt-widgets.vercel.app/${username}/watched/card`;
 
     const posterElement = document.getElementById('trakt-poster');
 
@@ -119,3 +119,4 @@ window.onload = function() {
     setInterval(fetchLastFmData, 60000);
     setInterval(fetchTraktData, 60000);
 };
+
