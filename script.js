@@ -1,4 +1,4 @@
-// Function to fetch data from Google Sheets (existing data from your spreadsheet)
+// Function to fetch data from Google Sheets
 function fetchData() {
     const sheetId = '1zFkn6MAbf_xnzsl3b605HCqCNRzNkZsuSmXe3GWAqzs';
     const apiKey = 'AIzaSyBaDaPUmaa4Fch3HHQXUZPKVKB7TOU4LfU';
@@ -28,8 +28,8 @@ function fetchData() {
 
 // Function to fetch latest song from Last.fm
 function fetchLastFmData() {
-    const lastFmApiKey = 'bbe174cee73e51f0c2ef046f2b79689b'; // Replace with your Last.fm API key
-    const username = 'thesamsterz'; // Replace with your Last.fm username
+    const lastFmApiKey = 'bbe174cee73e51f0c2ef046f2b79689b';
+    const username = 'thesamsterz';
     const lastFmUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=${lastFmApiKey}&format=json&limit=1`;
 
     fetch(lastFmUrl)
@@ -37,10 +37,10 @@ function fetchLastFmData() {
         .then(data => {
             const recentTracks = data.recenttracks.track;
             if (recentTracks && recentTracks.length > 0) {
-                const latestTrack = recentTracks[0]; // Get the most recent track
+                const latestTrack = recentTracks[0];
                 const songName = latestTrack.name;
                 const artistName = latestTrack.artist['#text'];
-                const albumArt = latestTrack.image[2]['#text']; // Get medium-sized album art
+                const albumArt = latestTrack.image[2]['#text'];
 
                 document.getElementById('song-name').textContent = songName || 'No song found';
                 document.getElementById('artist-name').textContent = artistName || 'No artist found';
@@ -48,7 +48,7 @@ function fetchLastFmData() {
                 if (albumArt) {
                     document.getElementById('album-art').src = albumArt;
                     document.getElementById('album-art').alt = `${songName} album art`;
-                    document.getElementById('album-art').style.display = 'block'; // Show the album art
+                    document.getElementById('album-art').style.display = 'block';
                 }
             }
         })
@@ -58,44 +58,34 @@ function fetchLastFmData() {
 }
 
 // Function to fetch the latest watched movie or episode from Trakt.tv
+// This function now uses the third-party widget URL
 function fetchTraktData() {
-    const traktApiKey = '46c509e2cef42228978ae6a69b138628a6399c0bf28b729b7883b19ab9b082eb'; // Your Trakt API key
-    const username = 'thesamsterz'; // Trakt.tv username
-    const traktUrl = `https://api.trakt.tv/users/${username}/history?limit=1`;
+    const username = 'thesamsterz';
+    const traktPosterUrl = `https://trakt-widgets.vercel.app/${username}/watched/poster`;
 
-    fetch(traktUrl, {
-        headers: {
-            'Content-Type': 'application/json',
-            'trakt-api-version': '2',
-            'trakt-api-key': traktApiKey, // Correct header for API key
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data && data.length > 0) {
-                const latestWatch = data[0];
-                const title = latestWatch.movie ? latestWatch.movie.title : latestWatch.episode.title;
-                const type = latestWatch.movie ? 'Movie' : 'TV Episode';
+    const posterElement = document.getElementById('trakt-poster');
 
-                document.getElementById('trakt-title').textContent = title || 'No title found';
-                document.getElementById('trakt-type').textContent = type || 'No type found';
+    if (posterElement) {
+        posterElement.src = traktPosterUrl;
+        posterElement.alt = `Latest watched by ${username}`;
+        posterElement.style.display = 'block';
+    }
 
-                const posterUrl = latestWatch.movie
-                    ? latestWatch.movie.images?.poster?.thumb
-                    : latestWatch.show?.images?.poster?.thumb;
+    // Since the widget URL returns an image directly, there's no need to fetch JSON data.
+    // The browser handles the image loading automatically.
+    // If you had text elements for title and type, they are no longer updated by this function.
+    // You would either need to use a different widget view (like "text")
+    // or remove those HTML elements.
+    const titleElement = document.getElementById('trakt-title');
+    const typeElement = document.getElementById('trakt-type');
 
-                if (posterUrl) {
-                    document.getElementById('trakt-poster').src = posterUrl;
-                    document.getElementById('trakt-poster').alt = `${title} poster`;
-                    document.getElementById('trakt-poster').style.display = 'block';
-                } else {
-                    document.getElementById('trakt-poster').style.display = 'none';
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching data from Trakt.tv:', error);
-        });
+    if (titleElement) {
+        titleElement.textContent = 'Latest Trakt Item';
+    }
+
+    if (typeElement) {
+        typeElement.textContent = 'Loading...';
+    }
 }
 
 // Fetch data immediately on page load
