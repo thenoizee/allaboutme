@@ -26,7 +26,8 @@ function fetchData() {
         });
 }
 
-// Function to fetch latest song from Last.fm
+// Function to fetch the latest song from Last.fm
+// This function includes the "Now Playing" status and a clickable song title link.
 function fetchLastFmData() {
     const lastFmApiKey = 'bbe174cee73e51f0c2ef046f2b79689b';
     const username = 'thesamsterz';
@@ -41,14 +42,36 @@ function fetchLastFmData() {
                 const songName = latestTrack.name;
                 const artistName = latestTrack.artist['#text'];
                 const albumArt = latestTrack.image[2]['#text'];
+                const trackUrl = latestTrack.url;
+                const isNowPlaying = latestTrack['@attr'] && latestTrack['@attr'].nowplaying === 'true';
 
-                document.getElementById('song-name').textContent = songName || 'No song found';
+                const songNameElement = document.getElementById('song-name');
+                if (songNameElement) {
+                    songNameElement.textContent = songName || 'No song found';
+                    if (trackUrl) {
+                        const link = document.createElement('a');
+                        link.href = trackUrl;
+                        link.textContent = songName;
+                        link.target = "_blank";
+                        songNameElement.innerHTML = '';
+                        songNameElement.appendChild(link);
+                    }
+                }
+
                 document.getElementById('artist-name').textContent = artistName || 'No artist found';
 
                 if (albumArt) {
-                    document.getElementById('album-art').src = albumArt;
-                    document.getElementById('album-art').alt = `${songName} album art`;
-                    document.getElementById('album-art').style.display = 'block';
+                    const albumArtElement = document.getElementById('album-art');
+                    if (albumArtElement) {
+                        albumArtElement.src = albumArt;
+                        albumArtElement.alt = `${songName} album art`;
+                        albumArtElement.style.display = 'block';
+                    }
+                }
+
+                const nowPlayingElement = document.getElementById('now-playing-status');
+                if (nowPlayingElement) {
+                    nowPlayingElement.textContent = isNowPlaying ? 'Now Playing' : 'Last Played';
                 }
             }
         })
@@ -58,7 +81,7 @@ function fetchLastFmData() {
 }
 
 // Function to fetch the latest watched movie or episode from Trakt.tv
-// This function now uses the third-party widget URL
+// This function uses the original third-party widget URL and cannot display the title from the image.
 function fetchTraktData() {
     const username = 'thesamsterz';
     const traktPosterUrl = `https://trakt-widgets.vercel.app/${username}/watched/poster`;
@@ -71,11 +94,8 @@ function fetchTraktData() {
         posterElement.style.display = 'block';
     }
 
-    // Since the widget URL returns an image directly, there's no need to fetch JSON data.
-    // The browser handles the image loading automatically.
-    // If you had text elements for title and type, they are no longer updated by this function.
-    // You would either need to use a different widget view (like "text")
-    // or remove those HTML elements.
+    // Since the widget returns an image, there is no JSON data to parse.
+    // We will set a generic title here.
     const titleElement = document.getElementById('trakt-title');
     const typeElement = document.getElementById('trakt-type');
 
@@ -89,12 +109,13 @@ function fetchTraktData() {
 }
 
 // Fetch data immediately on page load
-fetchData();
-fetchLastFmData();
-fetchTraktData();
+window.onload = function() {
+    fetchData();
+    fetchLastFmData();
+    fetchTraktData();
 
-// Automatically refresh the data every 60 seconds
-setInterval(fetchData, 60000);
-setInterval(fetchLastFmData, 60000);
-setInterval(fetchTraktData, 60000);
-
+    // Automatically refresh the data every 60 seconds
+    setInterval(fetchData, 60000);
+    setInterval(fetchLastFmData, 60000);
+    setInterval(fetchTraktData, 60000);
+};
